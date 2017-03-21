@@ -1,4 +1,4 @@
-require_relative "../app/Table"
+require_relative "../app/table"
 
 describe "Table" do
   let(:table) { Table.new }

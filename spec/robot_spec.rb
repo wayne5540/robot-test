@@ -1,4 +1,4 @@
-require_relative "../app/Robot"
+require_relative "../app/robot"
 
 describe "Robot" do
   let(:robot) { Robot.new }
