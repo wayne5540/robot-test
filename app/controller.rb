@@ -29,12 +29,29 @@ class Controller
       else
         raise InvalidCommandError.new("Error: #{action} is only available after robot has been placed")
       end
+    when "MOVE"
+      if robot.turn?
+        move!
+      else
+        raise InvalidCommandError.new("Error: #{action} is only available after robot has been placed")
+      end
     else
       raise InvalidCommandError.new("Error: #{action} is not a valid action")
     end
   end
 
   private
+
+  def move!
+    vector = {
+      north: { x: 0, y: 1 },
+      west: { x: -1, y: 0 },
+      south: { x: 0, y: -1 },
+      east: { x: 1, y: 0 }
+    }
+    new_cordination = { x: table.robot_position[:x] + vector[robot.face][:x], y: table.robot_position[:y] + vector[robot.face][:y] }
+    table.place!(new_cordination[:x], new_cordination[:y])
+  end
 
   def place!(arguments)
     raise InvalidArgumentsError.new("PLACE action requires 3 arguments: X,Y,F") if arguments.nil?

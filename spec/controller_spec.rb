@@ -11,19 +11,19 @@ describe "controller" do
         end
 
         context "when face is invalid" do
-          it "doesn't affect robot face orientation" do
+          it "doesn't change robot face orientation" do
             expect { controller.execute!("PLACE 1,2,SOUTHWEST") }.not_to change { controller.robot.face }
           end
-          it "doesn't affect robot position" do
+          it "doesn't change robot position" do
             expect { controller.execute!("PLACE 1,2,SOUTHWEST") }.not_to change { controller.table.robot_position }
           end
         end
 
         context "when cordinate is invalid" do
-          it "doesn't affect robot face orientation" do
+          it "doesn't change robot face orientation" do
             expect { controller.execute!("PLACE -1,2,NORTH") }.not_to change { controller.robot.face }
           end
-          it "doesn't affect robot position" do
+          it "doesn't change robot position" do
             expect { controller.execute!("PLACE -1,2,NORTH") }.not_to change { controller.table.robot_position }
           end
         end
@@ -37,13 +37,13 @@ describe "controller" do
     end
 
     describe "action LEFT" do
-      context "when robot not been placed yet" do
+      context "when robot has not been placed yet" do
         specify do
           expect { controller.execute!("LEFT") }.to raise_error Controller::InvalidCommandError
         end
       end
 
-      context "when robot have been placed" do
+      context "when robot has been placed" do
         before do
           controller.robot.face = "North"
         end
@@ -56,13 +56,13 @@ describe "controller" do
     end
 
     describe "action RIGHT" do
-      context "when robot not been placed yet" do
+      context "when robot has not been placed yet" do
         specify do
           expect { controller.execute!("RIGHT") }.to raise_error Controller::InvalidCommandError
         end
       end
 
-      context "when robot have been placed" do
+      context "when robot has been placed" do
         before do
           controller.robot.face = "North"
         end
@@ -70,6 +70,75 @@ describe "controller" do
         specify do
           expect(controller.robot).to receive(:right!).once
           controller.execute!("RIGHT")
+        end
+      end
+    end
+
+    describe "action MOVE" do
+      context "when robot has not been placed yet" do
+        specify do
+          expect { controller.execute!("MOVE") }.to raise_error Controller::InvalidCommandError
+        end
+      end
+
+      context "when robot has been placed" do
+        let(:x) { 2 }
+        let(:y) { 2 }
+
+        describe "North" do
+          before do
+            controller.execute!("PLACE #{x},#{y},NORTH")
+          end
+
+          specify do
+            expect {
+              controller.execute!("MOVE")
+            }.to change {
+              controller.table.robot_position
+            }.from({ x: x, y: y }).to({ x: x, y: y + 1 })
+          end
+        end
+
+        describe "SOUTH" do
+          before do
+            controller.execute!("PLACE #{x},#{y},SOUTH")
+          end
+
+          specify do
+            expect {
+              controller.execute!("MOVE")
+            }.to change {
+              controller.table.robot_position
+            }.from({ x: x, y: y }).to({ x: x, y: y - 1 })
+          end
+        end
+
+        describe "WEST" do
+          before do
+            controller.execute!("PLACE #{x},#{y},WEST")
+          end
+
+          specify do
+            expect {
+              controller.execute!("MOVE")
+            }.to change {
+              controller.table.robot_position
+            }.from({ x: x, y: y }).to({ x: x - 1, y: y })
+          end
+        end
+
+        describe "EAST" do
+          before do
+            controller.execute!("PLACE #{x},#{y},EAST")
+          end
+
+          specify do
+            expect {
+              controller.execute!("MOVE")
+            }.to change {
+              controller.table.robot_position
+            }.from({ x: x, y: y }).to({ x: x + 1, y: y })
+          end
         end
       end
     end
