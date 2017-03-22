@@ -3,6 +3,65 @@ require_relative "../app/robot"
 describe "Robot" do
   let(:robot) { Robot.new }
 
+  describe "#face=" do
+    describe "valid orientation, non case-sensitive" do
+      specify do
+        expect { robot.face=("NORTH") }.to change(robot, :face).from(nil).to(:north)
+      end
+      specify do
+        expect { robot.face=("west") }.to change(robot, :face).from(nil).to(:west)
+      end
+      specify do
+        expect { robot.face=("South") }.to change(robot, :face).from(nil).to(:south)
+      end
+      specify do
+        expect { robot.face=("eAST") }.to change(robot, :face).from(nil).to(:east)
+      end
+    end
+
+    describe "invalid orientation" do
+      specify do
+        expect{ robot.face=("SOUTHEAST") }.not_to change(robot, :face)
+      end
+    end
+  end
+
+  describe "#face?" do
+    describe "valid orientation, non case-sensitive" do
+      specify do
+        expect(robot.face?("NORTH")).to be true
+      end
+      specify do
+        expect(robot.face?("west")).to be true
+      end
+      specify do
+        expect(robot.face?("South")).to be true
+      end
+      specify do
+        expect(robot.face?("eAST")).to be true
+      end
+    end
+
+    describe "invalid orientation" do
+      specify do
+        expect(robot.face?("SOUTHEAST")).to be false
+      end
+    end
+  end
+
+  describe "#turn?" do
+    subject { robot.turn? }
+
+    context "when face has not been set yet" do
+      it { is_expected.to be false }
+    end
+
+    context "when face has been set" do
+      before { robot.face = :north }
+      it { is_expected.to be true }
+    end
+  end
+
   describe "#left!" do
     subject { robot.left! }
 
