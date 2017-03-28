@@ -33,6 +33,12 @@ class Controller
       else
         output!("Error: #{action} is only available after robot has been placed")
       end
+    when "REPORT"
+      if robot.turn?
+        output!("#{table.robot_position[:x]},#{table.robot_position[:y]},#{robot.face}")
+      else
+        output!("Error: #{action} is only available after robot has been placed")
+      end
     else
       output!("Error: #{action} is not a valid action")
     end
@@ -59,7 +65,6 @@ class Controller
     x, y, face = arguments.split(",", 3)
     x, y = [x.to_i, y.to_i]
 
-    # TODO: show error message if not able to place
     if robot.face?(face.to_s) && table.place?(x, y)
       robot.face = face
       table.place!(x, y)

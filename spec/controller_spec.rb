@@ -159,6 +159,32 @@ describe "controller" do
       end
     end
 
+    describe "action REPORT" do
+      context "when robot has been placed" do
+        let(:x) { 1 }
+        let(:y) { 2 }
+        let(:f) { "NORTH" }
+
+        before do
+          controller.execute!("PLACE #{x},#{y},#{f}")
+        end
+
+        it "add X,Y,F into outputs" do
+          controller.execute!("REPORT")
+
+          expect(controller.outputs.first).to eq("#{x},#{y},#{f.downcase}")
+        end
+      end
+
+      context "when robot has not been placed yet" do
+        specify do
+          controller.execute!("REPORT")
+
+          expect(controller.outputs.first).to eq("Error: REPORT is only available after robot has been placed")
+        end
+      end
+    end
+
     describe "invalid action" do
       specify "case sensitive" do
         controller.execute!("right")
