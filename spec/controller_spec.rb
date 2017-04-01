@@ -57,7 +57,7 @@ describe "controller" do
 
       context "when robot has been placed" do
         before do
-          controller.robot.face = "North"
+          controller.execute!("PLACE 1,2,NORTH")
         end
 
         specify do
@@ -78,7 +78,7 @@ describe "controller" do
 
       context "when robot has been placed" do
         before do
-          controller.robot.face = "North"
+          controller.execute!("PLACE 1,2,NORTH")
         end
 
         specify do
@@ -180,7 +180,7 @@ describe "controller" do
         specify do
           controller.execute!("REPORT")
 
-          expect(controller.outputs.first).to eq("Error: REPORT is only available after robot has been placed")
+          expect(controller.outputs.first).to include("Error:")
         end
       end
     end

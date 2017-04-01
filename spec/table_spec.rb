@@ -46,10 +46,27 @@ describe "Table" do
     describe "placed" do
       let(:x) { 1 }
       let(:y) { 2 }
-      before { table.robot_position = { x: x, y: y } }
+      before { table.place!(x, y) }
 
       it "returns false" do
         expect(table.place?(x, y)).to be false
+      end
+    end
+  end
+
+  describe "placed?" do
+    context "when been placed" do
+      before do
+        table.place!(1, 2)
+      end
+      specify do
+        expect(table.placed?).to be true
+      end
+    end
+
+    context "when not been placed yet" do
+      specify do
+        expect(table.placed?).to be false
       end
     end
   end

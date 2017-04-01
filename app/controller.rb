@@ -16,35 +16,27 @@ class Controller
     when "PLACE"
       place!(arguments)
     when "RIGHT"
-      if robot.turn?
-        robot.right!
-      else
-        output!("Error: #{action} is only available after robot has been placed")
-      end
+      do_advanced_action { robot.right! }
     when "LEFT"
-      if robot.turn?
-        robot.left!
-      else
-        output!("Error: #{action} is only available after robot has been placed")
-      end
+      do_advanced_action { robot.left! }
     when "MOVE"
-      if robot.turn?
-        move!
-      else
-        output!("Error: #{action} is only available after robot has been placed")
-      end
+      do_advanced_action { move! }
     when "REPORT"
-      if robot.turn?
-        output!("#{table.robot_position[:x]},#{table.robot_position[:y]},#{robot.face}")
-      else
-        output!("Error: #{action} is only available after robot has been placed")
-      end
+      do_advanced_action { report! }
     else
       output!("Error: #{action} is not a valid action")
     end
   end
 
   private
+
+  def do_advanced_action
+    if robot.turn? && table.placed?
+      yield
+    else
+      output!("Error: robot has not been placed yet")
+    end
+  end
 
   def move!
     vector = {
@@ -55,6 +47,10 @@ class Controller
     }
     new_cordination = { x: table.robot_position[:x] + vector[robot.face][:x], y: table.robot_position[:y] + vector[robot.face][:y] }
     table.place!(new_cordination[:x], new_cordination[:y])
+  end
+
+  def report!
+    output!("#{table.robot_position[:x]},#{table.robot_position[:y]},#{robot.face}")
   end
 
   def place!(arguments)
