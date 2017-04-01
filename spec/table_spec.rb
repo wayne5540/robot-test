@@ -10,12 +10,8 @@ describe "Table" do
 
     context "when place-able" do
       it "sets robot_position" do
-        subject
-
-        expect(table.robot_position).to eq({ x: x, y: y })
+        expect { subject }.to change { table.robot_position }.from(nil).to({ x: x, y: y })
       end
-
-      it { is_expected.to be true }
     end
 
     context "when non-place-able" do
@@ -23,7 +19,9 @@ describe "Table" do
         allow(table).to receive(:place?).with(x, y) { false }
       end
 
-      it { is_expected.to be false }
+      it "doesn't set robot_position" do
+        expect { subject }.not_to change { table.robot_position }
+      end
     end
   end
 

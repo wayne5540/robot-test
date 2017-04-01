@@ -7,12 +7,7 @@ class Table
   end
 
   def place!(x, y)
-    if place?(x, y)
-      @robot_position = { x: x, y: y }
-      true
-    else
-      false
-    end
+    @robot_position = { x: x, y: y } if place?(x, y)
   end
 
   def place?(x, y)
