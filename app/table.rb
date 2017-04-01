@@ -1,7 +1,10 @@
 class Table
   attr_reader :robot_position
-  X_LENGTH = 5.freeze
-  Y_LENGTH = 5.freeze
+
+  def initialize(width: 5, length: 5)
+    @width = width
+    @length = length
+  end
 
   def place!(x, y)
     if place?(x, y)
@@ -13,7 +16,7 @@ class Table
   end
 
   def place?(x, y)
-    (0...X_LENGTH).include?(x) && (0...Y_LENGTH).include?(y) && !placed_at?(x, y)
+    (0...@width).include?(x) && (0...@length).include?(y) && !placed_at?(x, y)
   end
 
   def placed?

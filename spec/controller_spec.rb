@@ -15,7 +15,7 @@ describe "controller" do
         specify do
           controller.execute!("PLACE one,")
 
-          expect(controller.outputs.first).to eq("Error: InvalidArgumentsError")
+          expect(controller.outputs.first).to eq("Error: PLACE action requires 3 arguments: X,Y,F")
         end
 
         context "when face is invalid" do
@@ -41,7 +41,11 @@ describe "controller" do
 
       context "when valid arguments" do
         specify do
-          expect(controller.execute!("PLACE 1,2,north")).to be true
+          expect { controller.execute!("PLACE 1,2,NORTH") }.to change { controller.robot.face }.from(nil).to(:north)
+        end
+
+        specify do
+          expect { controller.execute!("PLACE 1,2,NORTH") }.to change { controller.table.robot_position }.from(nil).to({ x: 1, y: 2 })
         end
       end
     end

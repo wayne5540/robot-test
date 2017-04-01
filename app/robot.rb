@@ -24,16 +24,16 @@ class Robot
     !ROTATION[downcase_symbol(orientation)].nil?
   end
 
-  def turn?
+  def orientation_set?
     !face.nil?
   end
 
   def left!
-    @face = ROTATION[face][:left] if turn?
+    @face = ROTATION[face][:left] if orientation_set?
   end
 
   def right!
-    @face = ROTATION[face][:right] if turn?
+    @face = ROTATION[face][:right] if orientation_set?
   end
 
   private

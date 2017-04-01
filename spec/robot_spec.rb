@@ -49,8 +49,8 @@ describe "Robot" do
     end
   end
 
-  describe "#turn?" do
-    subject { robot.turn? }
+  describe "#orientation_set?" do
+    subject { robot.orientation_set? }
 
     context "when face has not been set yet" do
       it { is_expected.to be false }
