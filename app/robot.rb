@@ -1,5 +1,5 @@
 class Robot
-  attr_accessor :face
+  attr_reader :face
 
   def face=(orientation)
     @face = downcase_symbol(orientation) if face?(orientation)
