@@ -11,7 +11,7 @@ class Controller
   end
 
   def execute!(command)
-    action, arguments = command.split(" ")
+    action, arguments = command.split
     case action
     when "PLACE"
       place!(arguments)
